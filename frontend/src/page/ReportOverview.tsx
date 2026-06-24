@@ -301,7 +301,10 @@ const ReportOverview: React.FunctionComponent = () => {
                             rows={selectedReports}
                             columns={columns}
                             getRowId={(row) => row.cveObject.cveId + row.dependency.dependencyName + row.dependency.version}
-                            onRowClick={(params) => window.open("reports/" + params.row.id, "_blank")}
+                            onRowClick={(params) => {
+                                if (window.getSelection()?.toString()) return
+                                window.open("reports/" + params.row.id, "_blank")
+                            }}
                         /> : null}
                     </Grid>
                 </Grid>
