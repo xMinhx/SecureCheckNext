@@ -20,29 +20,21 @@ from utilities.constants import (
 )
 
 
-# ---------------------------------------------------------------------------
-# Static demo data
-# ---------------------------------------------------------------------------
-
 DEMO_PROJECT = {
     "project_id": "securecheckplus",
     "project_name": "SecureCheckPlus",
     "deployment_threshold": Threshold.MEDIUM.name,
 }
 
-# (dependency_name, version, package_manager, license, path)
 DEMO_DEPENDENCIES = [
-    # --- Frontend: vulnerable packages (used in test fixtures) ---
     ("bootstrap",          "3.3.6",  "javascript", "MIT",   "frontend/node_modules/bootstrap"),
     ("jquery",             "1.11.1", "javascript", "MIT",   "frontend/node_modules/jquery"),
     ("axios",              "0.26.0", "javascript", "MIT",   "frontend/node_modules/axios"),
-    # --- Frontend: clean packages ---
     ("react",              "17.0.2", "javascript", "MIT",   "frontend/node_modules/react"),
     ("react-dom",          "17.0.2", "javascript", "MIT",   "frontend/node_modules/react-dom"),
     ("react-query",        "3.34.16","javascript", "MIT",   "frontend/node_modules/react-query"),
     ("react-router-dom",   "6.2.2",  "javascript", "MIT",   "frontend/node_modules/react-router-dom"),
     ("webpack",            "5.70.0", "javascript", "MIT",   "frontend/node_modules/webpack"),
-    # --- Backend: Python packages ---
     ("Django",             "5.1.2",  "python",     "BSD-3", "backend/requirements.txt"),
     ("djangorestframework","3.15.2", "python",     "BSD-3", "backend/requirements.txt"),
     ("django-cors-headers","4.5.0",  "python",     "MIT",   "backend/requirements.txt"),
@@ -51,12 +43,7 @@ DEMO_DEPENDENCIES = [
     ("whitenoise",         "6.7.0",  "python",     "MIT",   "backend/requirements.txt"),
 ]
 
-# CVE data: (cve_id, base_severity, cvss, epss, description,
-#            attack_vector, attack_complexity, privileges_required,
-#            user_interaction, confidentiality, integrity, availability, scope,
-#            recommended_url, published)
 DEMO_CVES = [
-    # --- bootstrap 3.3.6 ---
     (
         "CVE-2016-10735", BaseSeverity.MEDIUM.name, 6.1, 0.00384,
         "In Bootstrap 3.x before 3.4.0, XSS is possible in the data-target attribute.",
@@ -85,7 +72,6 @@ DEMO_CVES = [
         "https://blog.getbootstrap.com/2019/02/13/bootstrap-4-3-1-and-3-4-1/",
         datetime.datetime(2019, 2, 20, tzinfo=datetime.timezone.utc),
     ),
-    # --- jquery 1.11.1 ---
     (
         "CVE-2015-9251", BaseSeverity.MEDIUM.name, 6.1, 0.00698,
         "jQuery before 3.0.0 is vulnerable to Cross-site Scripting (XSS) attacks when a "
@@ -116,7 +102,6 @@ DEMO_CVES = [
         "https://github.com/jquery/jquery/security/advisories/GHSA-gxr4-xjj5-5px2",
         datetime.datetime(2020, 4, 29, tzinfo=datetime.timezone.utc),
     ),
-    # --- axios 0.26.0 ---
     (
         "CVE-2021-3749", BaseSeverity.HIGH.name, 7.5, 0.00433,
         "axios before 0.21.2 is vulnerable to Regular Expression Denial of Service (ReDoS) "
@@ -129,7 +114,6 @@ DEMO_CVES = [
     ),
 ]
 
-# Maps cve_id → (dep_name, dep_version, status, solution, comment)
 DEMO_REPORTS = [
     ("CVE-2016-10735", "bootstrap", "3.3.6", Status.THREAT.name,     Solution.CHANGE_VERSION, "Upgrade to bootstrap >= 3.4.1."),
     ("CVE-2018-14040", "bootstrap", "3.3.6", Status.REVIEW.name,     Solution.NO_SOLUTION_NEEDED, ""),
@@ -145,9 +129,8 @@ class Command(BaseCommand):
     help = "Seeds the preview database with a demo 'SecureCheckPlus' project and sample vulnerability data."
 
     def handle(self, *args, **options):
-        self.stdout.write("Seeding preview data …")
+        self.stdout.write("Seeding preview data ...")
 
-        # --- Project ---
         project, created = Project.objects.get_or_create(
             project_id=DEMO_PROJECT["project_id"],
             defaults={
@@ -160,7 +143,6 @@ class Command(BaseCommand):
         else:
             self.stdout.write(f"  · Project '{project.project_id}' already exists – skipping.")
 
-        # --- Dependencies ---
         dep_map: dict[tuple, Dependency] = {}
         for dep_name, version, pkg_mgr, lic, path in DEMO_DEPENDENCIES:
             dep, dep_created = Dependency.objects.get_or_create(
@@ -178,7 +160,6 @@ class Command(BaseCommand):
             if dep_created:
                 self.stdout.write(f"  ✓ Dependency {dep_name}@{version}")
 
-        # --- CVE Objects ---
         cve_map: dict[str, CVEObject] = {}
         for (cve_id, severity, cvss, epss, desc,
              av, ac, pr, ui, ci, ii, ai, scope, url, published) in DEMO_CVES:
@@ -206,7 +187,6 @@ class Command(BaseCommand):
             if cve_created:
                 self.stdout.write(f"  ✓ CVE {cve_id}")
 
-        # --- Reports ---
         for cve_id, dep_name, dep_version, status, solution, comment in DEMO_REPORTS:
             dep = dep_map.get((dep_name, dep_version))
             cve = cve_map.get(cve_id)
@@ -225,4 +205,3 @@ class Command(BaseCommand):
                 self.stdout.write(f"  ✓ Report {dep_name}@{dep_version} → {cve_id} [{status}]")
 
         self.stdout.write(self.style.SUCCESS("Preview data seeding complete."))
-
