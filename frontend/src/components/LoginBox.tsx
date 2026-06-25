@@ -36,7 +36,6 @@ const LoginBox: React.FunctionComponent = () => {
      * @param e
      */
     const onConfirm = async (clicked: boolean = false, e?: React.KeyboardEvent): Promise<void> => {
-        // @ts-ignore handled by first statement
         if ((e === undefined && clicked) || (e && e.key === "Enter")) {
             if (username && username.trim().length > 0) {
                 // Fetch CSRF token before the login POST so the cookie is present.
@@ -89,22 +88,20 @@ const LoginBox: React.FunctionComponent = () => {
                                 onSelectionChange={reloadPage}
                  />
          </Stack>
-        <Stack sx={headlineContainer}>
-            <Typography sx={titleStyle} variant="h3">{localization.loginPage.login}</Typography>
-                <Stack sx={formContainer}>
-                    <Stack sx={emailRow}>
-                             {/* <PersonRoundedIcon sx={icon}/> */}
-                            <TextField sx={inputField}
-                                       size="small"
-                                       id="email"
-                                       label={language.loginPage.userLabel}
-                                       variant="filled"
-                                       required
-                                       value={username}
-                                      onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setUsername(e.target.value)}/>
-                        </Stack>
-                    <Stack sx={passwordRow}>
-                                {/* <PersonRoundedIcon sx={icon}/> */}
+          <Stack sx={headlineContainer}>
+              <Typography sx={titleStyle} variant="h3">{localization.loginPage.login}</Typography>
+                  <Stack sx={formContainer}>
+                      <Stack sx={emailRow}>
+                             <TextField sx={inputField}
+                                        size="small"
+                                        id="email"
+                                        label={language.loginPage.userLabel}
+                                        variant="filled"
+                                        required
+                                        value={username}
+                                       onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setUsername(e.target.value)}/>
+                         </Stack>
+                      <Stack sx={passwordRow}>
                                 <TextField sx={inputField}
                                            size="small"
                                            id="password"
@@ -118,20 +115,20 @@ const LoginBox: React.FunctionComponent = () => {
                                     {visible ? <img src={urlAddress.media.rootUrlWithBase + urlAddress.media.eye} height={eyeIconSize} width={eyeIconSize} alt="show"/>
                                         : <img src={urlAddress.media.rootUrlWithBase + urlAddress.media.eyeCrossed} height={eyeIconSize} width={eyeIconSize} alt="hide"/>}
                             </Stack>
-                        </Stack>
-                </Stack>
-        </Stack>
-            <Stack sx={keepMeLoggedIn}>
-                <input type="checkbox" style={checkbox} onClick={() => setStayLoggedIn(!stayLoggedIn)}/>
-                <Typography variant="caption">{language.loginPage.checkBoxLabel}</Typography>
-            </Stack>
-            <Button sx={button}
+                         </Stack>
+                  </Stack>
+          </Stack>
+              <Stack sx={keepMeLoggedIn}>
+                  <input type="checkbox" style={checkbox} onClick={() => setStayLoggedIn(!stayLoggedIn)}/>
+                  <Typography variant="caption">{language.loginPage.checkBoxLabel}</Typography>
+              </Stack>
+              <Button sx={button}
                      variant="contained"
                      type="submit"
                      startIcon={<LoginRoundedIcon/>}
              >{language.loginPage.buttonLabel}
              </Button>
-        </Stack>
+         </Stack>
         </form>
     )
 }
@@ -198,7 +195,6 @@ const eye = {
 
 
 const keepMeLoggedIn = {
-    //T,R,B,L
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
