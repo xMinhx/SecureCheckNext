@@ -19,7 +19,7 @@ curl -X POST http://localhost:8005/api/login \
   -H "Content-Type: application/json" \
   -d '{"username":"test","password":"test"}'
 
-# ✅ RICHTIG - User Data Endpoint  
+# ✅ RICHTIG - User Data Endpoint
 curl http://localhost:8005/api/me
 
 # ✅ RICHTIG - Projects Endpoint
@@ -74,15 +74,14 @@ curl http://localhost:8005/api/projects
 ```bash
 # ❌ SCHLECHT: HTML Response
 <html>
-<head><title>Not Found</title></head>
+<head><title>Not Found</title>
 ...
 
 # ✅ GUT: JSON Response
 {"detail":"Authentication credentials were not provided."}
 
-# ✅ GUT: JSON Response  
+# ✅ GUT: JSON Response
 {"username":"...","email":"..."}
 ```
 
 Testen Sie jetzt mit echten Endpoints!
-
