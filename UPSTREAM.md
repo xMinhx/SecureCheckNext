@@ -54,12 +54,21 @@ maintainers can review and cherry-pick what they want.
 ### Doc Updates (1 commit)
 - `a09bd39` docs: update outdated content to match 3-tier architecture and current parsers
 
+### Original accso/SecureCheckPlus Contributions (8 commits)
+These were features/fixes from the original accso/SecureCheckPlus repo before it was archived. The "(upstream #XX)" references in commit messages refer to the original PR numbers from when the repo was active. These PRs never made it into the current upstream/main, so they're offered here:
+- `3672251` 26 extended length of fields project_name and project_id (Nils Kreiner)
+- `1fbb411` fixed validation (Nils Kreiner)
+- `dc60ea4` finished adding tooltips for the CVSS calculator metrics (Nils Kreiner)
+- `12d0589` Fix profile picture loading error in production
+- `ed8560b` added cve description to the details page (Nils Kreiner)
+- `9c70b17` Replace remote DiceBear avatars with local client-side generation (Nils Kreiner)
+- `7b306ce` Remove unused @dicebear/adventurer-neutral dependency (Nils Kreiner)
+- `b945ab5` Suppress onRowClick navigation when selecting text in report grid (Nils Kreiner)
+
 ## What's Excluded
 
-### Already in upstream (10 commits)
-These were cherry-picked from upstream and are already part of their history:
-- Cherry-picked upstream PRs (#10, #22, #38, #44) and related fixes
-- Profile picture fix, row clickable, CVSS tooltips, field lengths
+### Already in upstream (1 commit)
+- `2584b58` added localization for the chart all on the project-page (upstream PR #44)
 
 ### Operational/Personal (4 commits)
 - `3464060` chore: attribute CSP dicebear fix to upstream PR #45 (internal bookkeeping)
@@ -72,6 +81,9 @@ These were cherry-picked from upstream and are already part of their history:
 
 ### German Documentation (1 commit)
 - `3a80f15` Add deployment documentation (contains PROJEKTUEBERSICHT_3TIER.md, German-only)
+
+### Duplicate (1 commit)
+- `3db56b8` made the whole row clickable and removed the column open (superseded by b945ab5)
 
 ## How to Use This Branch
 
