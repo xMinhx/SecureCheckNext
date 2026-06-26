@@ -2,6 +2,10 @@
     <img src="backend/assets/images/SecureCheckPlusLogoHorizontal.png">
 </div>
 
+> **This is an actively maintained fork of [accso/SecureCheckPlus](https://github.com/accso/SecureCheckPlus).**
+> It includes security hardening, parser bug fixes, and E2E test coverage.
+> See [UPSTREAM.md](UPSTREAM.md) for commits curated for upstream contribution.
+
 # Overview
 
 SecureCheckPlus by Accso is a web application that can be integrated into the CI/CD process via an adapter.
