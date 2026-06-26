@@ -15,16 +15,30 @@ ls -la dist/  # Verify: index.html, app.js, login.js vorhanden
 
 ## Phase 2: Docker Start (3 Min)
 
+The repo has 3 compose files for different environments:
+- `docker-compose.yml` — base infra (db + smtp + ldap)
+- `docker-compose-preview.yml` — full preview stack (frontend + backend-dev)
+- `docker-compose.ci.yml` — CI stack (backend-prod + ldap)
+
+A helper script wraps the multi-file setup:
+
 ```bash
+# Start the full preview stack (equivalent to the manual command below)
+scripts/dev-up.sh
+
+# Or manually:
 # Alte Container stoppen
-docker-compose -f docker-compose-preview.yml down
+docker compose -f docker-compose.yml -f docker-compose-preview.yml down
 
 # Neu starten mit Build
-docker-compose -f docker-compose-preview.yml up --build -d
+docker compose -f docker-compose.yml -f docker-compose-preview.yml up --build -d
 
 # Logs anschauen
-docker-compose -f docker-compose-preview.yml logs -f
+scripts/dev-up.sh logs
+# or: docker compose -f docker-compose.yml -f docker-compose-preview.yml logs -f
 ```
+
+Other targets: `scripts/dev-up.sh base` (infra only), `scripts/dev-up.sh ci` (CI stack), `scripts/dev-up.sh down all` (stop everything).
 
 ✅ **Erwartet:** Alle Container starten ohne Fehler
 
