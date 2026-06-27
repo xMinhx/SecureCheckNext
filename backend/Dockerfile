@@ -20,7 +20,7 @@ ENTRYPOINT ["sh", "/entrypoint.sh"]
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-FROM dev as prod
+FROM dev AS prod
 #ARG is required for the settings.py. Otherwise the build will fail, because required env variables have not been set
 ARG BUILD=1
 
@@ -35,4 +35,8 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/check_health', timeout=2).read()" || exit 1
 
 # Overwrites previous CMD from stage "dev"
+<<<<<<< HEAD
 CMD ["sh", "-c", "exec gunicorn securecheckplus.wsgi:application --bind 0.0.0.0:8000 --workers=${GUNICORN_WORKERS:-2} --threads=${GUNICORN_THREADS:-2} --log-level ${LOG_LEVEL:-INFO}"]
+=======
+CMD ["sh", "-c", "exec gunicorn securecheckplus.wsgi:application --bind 0.0.0.0:8000 --workers=${GUNICORN_WORKERS:-2} --threads=${GUNICORN_THREADS:-2} --log-level ${LOG_LEVEL:-INFO}"]
+>>>>>>> origin/pr/3tier-architecture
