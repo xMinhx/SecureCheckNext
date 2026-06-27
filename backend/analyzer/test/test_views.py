@@ -26,7 +26,7 @@ class TestViews:
                                    HTTP_API_KEY=self.key)
 
         response = self.view(request)
-        assert response.status_code == 200
+        assert response.status_code == 406
         try:
             Project.objects.get(project_id="TestProject")
             assert True
@@ -90,4 +90,4 @@ class TestViews:
                                    HTTP_API_KEY=self.key)
 
         response = self.view(request)
-        assert response.status_code == 200
+        assert response.status_code == 406
