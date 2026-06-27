@@ -19,6 +19,8 @@ const CreationContent: React.FunctionComponent<DialogContentProps> = (dialogCont
     const [threshold, setThreshold] = useState("HIGH");
     const queryClient = useQueryClient()
     const [helperText, setHelperText] = useState("")
+    const [nameInvalid, setNameInvalid] = useState(false);
+    const [projectNameHelperText, setProjectNameHelperText] = useState("Optional");
     const handleSave = useMutation(() => createProject(projectId, {
         projectName: projectName,
         deploymentThreshold: threshold
@@ -56,11 +58,11 @@ const CreationContent: React.FunctionComponent<DialogContentProps> = (dialogCont
             setInvalid(true);
             setHelperText(localization.dialog.projectIdHelperNotEmpty)
         }else if (projectId.includes(" ")){
-            setIdInvalid(true);
-            setProjectIdHelperText(localization.dialog.projectIdHelperNoSpaces)
+            setInvalid(true);
+            setHelperText(localization.dialog.projectIdHelperNoSpaces)
         }else if (projectId.length > 50){
-            setIdInvalid(true);
-            setProjectIdHelperText(localization.dialog.projectIdHelperToLong)
+            setInvalid(true);
+            setHelperText(localization.dialog.projectIdHelperToLong)
         }else {
             if (data?.data !== undefined) {
                 if (allProjectIds.includes(projectId.toLowerCase())) {
@@ -72,7 +74,7 @@ const CreationContent: React.FunctionComponent<DialogContentProps> = (dialogCont
                 }
             }
         }
-    }, [projectId, isProjectIdTouched, allProjectIds])
+    }, [projectId, allProjectIds])
 
     useEffect(() => {
         if (projectName.length > 50) {
@@ -97,7 +99,8 @@ const CreationContent: React.FunctionComponent<DialogContentProps> = (dialogCont
                 />
                 <TextField
                     style={{marginTop: "1rem"}}
-                    helperText={"Optional"}
+                    helperText={projectNameHelperText}
+                    error={nameInvalid}
                     label={localization.dialog.projectName}
                     value={projectName}
                     variant="filled"
