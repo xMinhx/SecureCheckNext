@@ -15,8 +15,6 @@ concurrency:
 env:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
-  DOCKER_USER: ${{ secrets.DOCKER_USER }}
-  DOCKER_KEY: ${{ secrets.DOCKER_KEY }}
 
 jobs:
   create_dotenv_file:
@@ -75,9 +73,6 @@ jobs:
         with:
           name: env_file
           path: backend
-
-      - name: Docker Login
-        run: echo "$DOCKER_KEY" | docker login -u "$DOCKER_USER" --password-stdin
 
       - name: Build Docker Compose
         run: docker compose -f docker-compose.ci.yml build --no-cache
@@ -238,14 +233,18 @@ jobs:
           name: frontend_build_files
           path: backend/assets
 
-      - name: Docker Login
-        run: echo "$DOCKER_KEY" | docker login -u "$DOCKER_USER" --password-stdin
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: accso/secure-check-plus
+          images: ghcr.io/${{ github.repository }}/server
 
       - name: Build and push Docker image
         id: push
@@ -255,7 +254,7 @@ jobs:
           no-cache: true
           target: prod
           push: true
-          tags: accso/secure-check-plus:latest
+          tags: ghcr.io/${{ github.repository }}/server:latest
           labels: ${{ steps.meta.outputs.labels }}
 
   build_and_push_adapter:
@@ -277,14 +276,18 @@ jobs:
           name: env_file
           path: backend
 
-      - name: Docker Login
-        run: echo "$DOCKER_KEY" | docker login -u "$DOCKER_USER" --password-stdin
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: accso/secure-check-plus-adapter
+          images: ghcr.io/${{ github.repository }}/adapter
 
       - name: Build and push Docker image
         id: push
@@ -293,5 +296,5 @@ jobs:
           context: ./adapter/adapter
           no-cache: true
           push: true
-          tags: accso/secure-check-plus-adapter:latest
+          tags: ghcr.io/${{ github.repository }}/adapter:latest
           labels: ${{ steps.meta.outputs.labels }}
