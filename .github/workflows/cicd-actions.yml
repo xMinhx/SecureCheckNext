@@ -159,6 +159,8 @@ jobs:
         working-directory: backend
         env:
           IS_DEV: "True"
+          FULLY_QUALIFIED_DOMAIN_NAME: "https://localhost"
+          NVD_API_KEY: ${{ secrets.TEST_NVD_API_KEY }}
           POSTGRES_HOST: localhost
           POSTGRES_USER: securecheckplus
           POSTGRES_DB: securecheckplus
