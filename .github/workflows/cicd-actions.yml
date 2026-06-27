@@ -223,6 +223,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Lowercase repository
+        id: repo
+        run: echo "repo=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
+
       - name: Download .env artifact
         uses: actions/download-artifact@v4
         with:
@@ -246,7 +250,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/server
+          images: ghcr.io/${{ steps.repo.outputs.repo }}/server
 
       - name: Build and push Docker image
         id: push
@@ -256,7 +260,7 @@ jobs:
           no-cache: true
           target: prod
           push: true
-          tags: ghcr.io/${{ github.repository }}/server:latest
+          tags: ghcr.io/${{ steps.repo.outputs.repo }}/server:latest
           labels: ${{ steps.meta.outputs.labels }}
 
   build_and_push_adapter:
@@ -271,6 +275,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Lowercase repository
+        id: repo
+        run: echo "repo=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
 
       - name: Download .env artifact
         uses: actions/download-artifact@v4
@@ -289,7 +297,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/adapter
+          images: ghcr.io/${{ steps.repo.outputs.repo }}/adapter
 
       - name: Build and push Docker image
         id: push
@@ -298,5 +306,5 @@ jobs:
           context: ./adapter/adapter
           no-cache: true
           push: true
-          tags: ghcr.io/${{ github.repository }}/adapter:latest
+          tags: ghcr.io/${{ steps.repo.outputs.repo }}/adapter:latest
           labels: ${{ steps.meta.outputs.labels }}
