@@ -1,4 +1,12 @@
 
+const NOT_DEFINED = "Not Defined";
+const NOT_DEFINED_REQ = "Assigning this value indicates there is insufficient information to choose one of the other values, and has no impact on the overall Environmental Score, i.e., it has the same effect on scoring as assigning High.";
+const NOT_DEFINED_DEF = "Assigning this value indicates there is insufficient information to choose one of the other values, and has no impact on the overall Modified Base Score, i.e., it has the same effect on scoring as assigning Medium.";
+const LOW = "Low";
+const MEDIUM = "Medium";
+const HIGH = "High";
+const NONE = "None";
+
 const language = {
     de: {
         breadCrumbMap: {
