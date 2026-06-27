@@ -19,6 +19,11 @@ const CreationContent: React.FunctionComponent<DialogContentProps> = (dialogCont
     const [threshold, setThreshold] = useState("HIGH");
     const queryClient = useQueryClient()
     const [helperText, setHelperText] = useState("")
+    const [idInvalid, setIdInvalid] = useState(false);
+    const [projectIdHelperText, setProjectIdHelperText] = useState("");
+    const [isProjectIdTouched, setIsProjectIdTouched] = useState(false);
+    const [nameInvalid, setNameInvalid] = useState(false);
+    const [projectNameHelperText, setProjectNameHelperText] = useState("");
     const handleSave = useMutation(() => createProject(projectId, {
         projectName: projectName,
         deploymentThreshold: threshold
