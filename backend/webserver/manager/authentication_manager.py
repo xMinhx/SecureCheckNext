@@ -89,6 +89,9 @@ class AuthenticationBackend(ModelBackend):
 
             elif IS_DEV and ADMIN_USERNAME and ADMIN_PASSWORD and ADMIN_USERNAME == username and hmac.compare_digest(ADMIN_PASSWORD, password):
                 user = User.objects.get_or_create(username=username)[0]
+                user.is_staff = True
+                user.is_superuser = True
+                user.save()
                 user.groups.add(Group.objects.get_or_create(name="admin")[0])
                 return user
 
